@@ -4,12 +4,13 @@ import zio.json._
 
 object JsonCodecs {
 
-  implicit def edgeCodec[V: JsonEncoder: JsonDecoder]: JsonCodec[Edge[V]] =
-    DeriveJsonCodec.gen[Edge[V]]: JsonCodec[Edge[V]]
+  implicit def edgeCodec: JsonCodec[Edge[String]] =
+    DeriveJsonCodec.gen[Edge[String]]
 
-  implicit def directedGraphCodec[V: JsonEncoder: JsonDecoder]: JsonCodec[DirectedGraph[V]] =
-    DeriveJsonCodec.gen[DirectedGraph[V]]: JsonCodec[DirectedGraph[V]]
+  implicit val directedGraphCodec: JsonCodec[DirectedGraph[String]] = {
+    DeriveJsonCodec.gen[DirectedGraph[String]]
+  }
 
-  implicit def undirectedGraphCodec[V: JsonEncoder: JsonDecoder]: JsonCodec[UndirectedGraph[V]] =
-    DeriveJsonCodec.gen[UndirectedGraph[V]]: JsonCodec[UndirectedGraph[V]]
+  implicit def undirectedGraphCodec: JsonCodec[UndirectedGraph[String]] =
+    DeriveJsonCodec.gen[UndirectedGraph[String]]
 }
