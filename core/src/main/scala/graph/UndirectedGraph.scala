@@ -29,8 +29,8 @@ case class UndirectedGraph[V](adjList: Map[V, Set[(V, Int)]]) extends Graph[V] {
 
   // 🔧 Corrigé pour matcher la signature attendue par Graph[V]
   def removeEdge(edge: Edge[V]): UndirectedGraph[V] = {
-    val updated1 = adjList.updatedWith(edge.from)(.map(.filterNot(_._1 == edge.to)))
-    val updated2 = updated1.updatedWith(edge.to)(.map(.filterNot(_._1 == edge.from)))
+    val updated1 = adjList.updatedWith(edge.from)(_.map(_.filterNot(_._1 == edge.to)))
+    val updated2 = updated1.updatedWith(edge.to)(_.map(_.filterNot(_._1 == edge.from)))
     copy(adjList = updated2)
   }
 }
