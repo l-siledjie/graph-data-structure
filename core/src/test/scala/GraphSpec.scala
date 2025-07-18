@@ -36,4 +36,25 @@ class GraphSpec extends AnyFlatSpec with Matchers {
     val decodedGraph = Graph.fromJson(json) // Assume this method is implemented
     decodedGraph.edges should equal(updatedGraph.edges)
   }
+  it should "detect cycles correctly" in {
+    val graph = new DirectedGraph[Int]()
+    graph.addEdge(Edge(1, 2, 1))
+    graph.addEdge(Edge(2, 1, 1)) // Create a cycle
+    GraphOps.hasCycle(graph) should be(true)
+
+    val acyclicGraph = new DirectedGraph[Int]()
+    acyclicGraph.addEdge(Edge(1, 2, 1))
+    GraphOps.hasCycle(acyclicGraph) should be(false)
+  }
+
+  it should "find the shortest path using Dijkstra's algorithm" in {
+    val graph = new DirectedGraph[Int]()
+    graph.addEdge(Edge(1, 2, 1))
+    graph.addEdge(Edge(1, 3, 4))
+    graph.addEdge(Edge(2, 3, 2))
+
+    val distances = GraphOps.dijkstra(graph, 1)
+    distances(2) should equal(1) // Shortest path from 1 to 2
+    distances(3) should equal(3) // Shortest path from 1 to 3 (1 -> 2 -> 3)
+  }
 }
