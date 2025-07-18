@@ -8,8 +8,12 @@ object GraphOps {
       if (visited.contains(vertex)) {
         List.empty
       } else {
+        // Mark the vertex as visited
         val newVisited = visited + vertex
-        vertex :: graph.neighbors(vertex).map(_._1).flatMap(neighbor => dfsHelper(neighbor, newVisited))
+
+        // Get the neighbors and perform DFS on them
+        val neighbors = graph.neighbors(vertex).map(_._1)
+        vertex :: neighbors.toList.flatMap(neighbor => dfsHelper(neighbor, newVisited))
       }
     }
     dfsHelper(start, Set.empty)
