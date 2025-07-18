@@ -13,7 +13,6 @@ case class DirectedGraph[V](adjList: Map[V, Set[(V, Int)]]) extends Graph[V] {
   def neighbors(vertex: V): Set[(V, Int)] =
     adjList.getOrElse(vertex, Set.empty)
 
-  // 🚨 Modifié ici : on prend un objet Edge[V] complet
   def addEdge(edge: Edge[V]): DirectedGraph[V] = {
     val updated = adjList.updatedWith(edge.from) {
       case Some(neighs) => Some(neighs + ((edge.to, edge.weight)))
@@ -29,4 +28,8 @@ case class DirectedGraph[V](adjList: Map[V, Set[(V, Int)]]) extends Graph[V] {
     }
     copy(adjList = updated)
   }
+
+  // ✅ Implémentation requise par le trait Graph[V]
+  override def removeEdge(edge: Edge[V]): DirectedGraph[V] =
+    removeEdge(edge.from, edge.to)
 }

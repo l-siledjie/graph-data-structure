@@ -15,7 +15,6 @@ case class UndirectedGraph[V](adjList: Map[V, Set[(V, Int)]]) extends Graph[V] {
   def neighbors(vertex: V): Set[(V, Int)] =
     adjList.getOrElse(vertex, Set.empty)
 
-  // 🚨 Modifié ici : on prend un Edge[V] complet
   def addEdge(edge: Edge[V]): UndirectedGraph[V] = {
     val updated1 = adjList.updatedWith(edge.from) {
       case Some(neighs) => Some(neighs + ((edge.to, edge.weight)))
@@ -28,9 +27,10 @@ case class UndirectedGraph[V](adjList: Map[V, Set[(V, Int)]]) extends Graph[V] {
     copy(adjList = updated2)
   }
 
-  def removeEdge(from: V, to: V): UndirectedGraph[V] = {
-    val updated1 = adjList.updatedWith(from)(_.map(_.filterNot(_._1 == to)))
-    val updated2 = updated1.updatedWith(to)(_.map(_.filterNot(_._1 == from)))
+  // 🔧 Corrigé pour matcher la signature attendue par Graph[V]
+  def removeEdge(edge: Edge[V]): UndirectedGraph[V] = {
+    val updated1 = adjList.updatedWith(edge.from)(.map(.filterNot(_._1 == edge.to)))
+    val updated2 = updated1.updatedWith(edge.to)(.map(.filterNot(_._1 == edge.from)))
     copy(adjList = updated2)
   }
 }
